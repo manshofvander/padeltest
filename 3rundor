@@ -1,0 +1,271 @@
+
+import java.util.ArrayList;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+public class Lottning4 {
+	private int antalRundor = 5;
+	private Random rand = new Random();
+
+	public void skapaPar() {
+
+		Spelare1 Sågen = new Spelare1("Sågen");
+		Spelare1 Noah = new Spelare1("Noah");
+		Spelare1 Isak = new Spelare1("Isak");
+		Spelare1 Calle = new Spelare1("Calle");
+		Spelare1 David = new Spelare1("David");
+		Spelare1 Igor = new Spelare1("Igor");
+		Spelare1 T = new Spelare1("T");
+		Spelare1 Bozi = new Spelare1("Bozi");
+		Spelare1 Casper = new Spelare1("Casper");
+		Spelare1 Måns = new Spelare1("Måns");
+		Spelare1 Jesper = new Spelare1("Jesper");
+		Spelare1 Pivko = new Spelare1("Pivko");
+		Spelare1 Bohman = new Spelare1("Bohman");
+		Spelare1 Edwin = new Spelare1("Edwin");
+		Spelare1 Gustav = new Spelare1("Gustav");
+		Spelare1 Stefan = new Spelare1("Stefan");
+		Spelare1 Dardan = new Spelare1("Dardan");
+		Spelare1 Kroon = new Spelare1("Kroon");
+		Spelare1 Julia = new Spelare1("Julia");
+		Spelare1 Milos = new Spelare1("Milos");
+		Spelare1 Noel = new Spelare1("Noel");
+		Spelare1 Eddie = new Spelare1("Eddie");
+
+		List<Spelare1> namn = new ArrayList<>();
+		List<Spelare1> playList1 = new ArrayList<>();
+		List<Spelare1> playList2 = new ArrayList<>();
+		List<Spelare1> playList3 = new ArrayList<>();
+		List<Spelare1> playList4 = new ArrayList<>();
+		List<Spelare1> passedList = new ArrayList<>();
+
+		namn.addAll(Arrays.asList(Noah, Isak, Calle, David, Igor, T, Bozi, Casper, Jesper, Sågen, Måns, Pivko, Bohman,
+				Edwin, Dardan, Gustav, Stefan, Kroon, Julia, Milos, Noel, Eddie));
+		// Collections.shuffle(namn);
+
+		// Runda 1
+		// ---------------------------------------------------------------------------------------------
+
+		// l'gger till i playlist.
+		for (int i = 0; i < namn.size(); i++) {
+			if (!playList1.contains(namn.get(i)) && i < 16) {
+				playList1.add(namn.get(i));
+				namn.get(i).addAntal();
+			} else {
+				namn.get(i).hasPassed();
+				passedList.add(namn.get(i));
+			}
+		}
+
+		/*
+		 * //l'gger till i passedList for (int i = 0; i < namn.size(); i++) { if
+		 * (!passedList.contains(namn.get(i)) && namn.get(i).getPassed()) {
+		 * playList1.add(namn.get(i)); } }
+		 * 
+		 */
+
+		// printa ut och l'gger till medspelare
+		System.out.println("Runda 1");
+		for (int ji = 0; ji < playList1.size() - 1; ji += 2) {
+			System.out.println("Par " + ((ji / 2) + 1) + "  " + playList1.get(ji).getName() + " & "
+					+ playList1.get(ji + 1).getName());
+			playList1.get(ji).addMedspelare(playList1.get(ji + 1));
+			playList1.get(ji + 1).addMedspelare(playList1.get(ji));
+
+		}
+
+		// går genom namn och ser vilka som ej finns i playlist1, skriver ut som står
+		// över
+		for (int i = 0; i < namn.size(); i++) {
+			if (!playList1.contains(namn.get(i))) {
+				System.out.println(namn.get(i).getName() + " Står över");
+
+			}
+		}
+
+		// ---------------------------------------------------------------------------------------------------------------------
+
+		// Runda 2
+		// System.out.println("passedList efter 1");
+		// System.out.println(passedList);
+
+		// går genom passedList och lägger till i playList
+		for (int i = 0; i < passedList.size(); i++) {
+			playList2.add(passedList.get(i));
+		}
+
+		// fyller på playlist från namn. Kollar att de inte redan finns i listan
+		for (int i = 0; i < namn.size(); i++) {
+			if (playList2.size() < 16 && !playList2.contains(namn.get(i))) {
+				playList2.add(namn.get(i));
+			} else if (!passedList.contains(namn.get(i))) {
+				passedList.add(namn.get(i));
+			}
+		}
+
+		System.out.println("Runda 2");
+		
+
+		// går genom namn och ser vilka som ej finns i playlist1, skriver ut som står
+		// över
+
+		for (int i = 0; i < namn.size(); i++) {
+			if (!playList2.contains(namn.get(i))) {
+				System.out.println(namn.get(i).getName() + " Står över");
+
+			}
+		}
+
+		// ser till att spelarna inte spelat med varandra redan, går genom playlist2.
+		// börjar på 0 och går uppåt
+		for (int ji = 0; ji < 8; ji++) {
+
+			int medspelare = 1;
+			while (playList2.get(0).getMedspelare().contains(playList2.get(medspelare))) {
+				medspelare=rand.nextInt(playList2.size());
+
+			}
+			System.out.println("Par " + (ji + 1) + "  " + playList2.get(0).getName() + " & "
+					+ playList2.get(medspelare).getName());
+			// l'gger till spelarna i varandras lista
+			playList2.get(0).addMedspelare(playList2.get(medspelare));
+			playList2.get(medspelare).addMedspelare(playList2.get(0));
+
+			playList2.remove(medspelare);
+			playList2.remove(0);
+
+		}
+
+		// ----------------------------------------------------------------------------------------------------
+
+		// Runda3
+
+		// går genom passedList och lägger till i playList
+		for (int i = 0; i < passedList.size(); i++) {
+			playList3.add(passedList.get(i));
+		}
+
+		// System.out.println("passedList efter 2");
+		// System.out.println(passedList);
+
+		// fyller på playlist från namn. Kollar att de inte redan finns i listan
+		for (int i = 0; i < namn.size(); i++) {
+			if (playList3.size() < 16 && !playList3.contains(namn.get(i))) {
+				playList3.add(namn.get(i));
+			} else {
+				passedList.add(namn.get(i));
+			}
+		}
+
+		System.out.println("-----------------------------");
+		System.out.println("Runda 3");
+
+		// går genom namn och ser vilka som ej finns i playlist3, skriver ut som står
+		// över
+
+		for (int i = 0; i < namn.size(); i++) {
+			if (!playList3.contains(namn.get(i))) {
+				System.out.println(namn.get(i).getName() + " Står över");
+
+			}
+		}
+
+		// ser till att spelarna inte spelat med varandra redan, går genom playlist2.
+		// börjar på 0 och går uppåt
+		for (int ji = 0; ji < 8; ji++) {
+
+			int medspelare = 1;
+			while (playList3.get(0).getMedspelare().contains(playList3.get(medspelare))) {
+				medspelare++;
+
+			}
+			System.out.println("Par " + (ji + 1) + "  " + playList3.get(0).getName() + " & "
+					+ playList3.get(medspelare).getName());
+			// l'gger till spelarna i varandras lista
+			playList3.get(0).addMedspelare(playList3.get(medspelare));
+			playList3.get(medspelare).addMedspelare(playList3.get(0));
+
+			playList3.remove(medspelare);
+			playList3.remove(0);
+
+		}
+
+		// --------------------------------------------------------------------------------------------------------
+
+		// System.out.println(playList2);
+
+		/*
+		 * for (int runda = 1; runda < 6; runda++) { System.out.println("Runda " +
+		 * (runda)); System.out.println(" - "); int j1 = 0; int j2 = 1;
+		 * 
+		 * 
+		 * 
+		 * //test for(int u = 0; u<namn.size();u++) { if(namn.get(u).getPassed()&&
+		 * !passedList.contains(namn.get(u))) { passedList.add(namn.get(u)); } }
+		 * 
+		 * 
+		 * 
+		 * 
+		 * for (int i = 0; i < 8; i++) { j1++; j2++;
+		 * 
+		 * 
+		 * while (namn.get(j1).getPassed() == true || namn.get(j1).getAntal() >= runda)
+		 * { if (j1 >= 20) { j1 = rand.nextInt(namn.size()); } else { j1++; } }
+		 * 
+		 * while (namn.get(j1).getMedspelare().contains(namn.get(j2)) ||
+		 * namn.get(j2).getPassed() == true || namn.get(j2) == namn.get(j1) ||
+		 * namn.get(j2).getAntal() >= runda) { if (j2 >= 20) { j2 =
+		 * rand.nextInt(namn.size()); } else { j2++; } }
+		 * 
+		 * namn.get(j1).addMedspelare(namn.get(j2));
+		 * namn.get(j2).addMedspelare(namn.get(j1)); namn.get(j1).addAntal();
+		 * namn.get(j2).addAntal();
+		 * 
+		 * 
+		 * System.out.println("Par " + (i + 1) + " " + namn.get(j1).getName() + " & " +
+		 * namn.get(j2).getName()); // System.out.println(j1);
+		 * 
+		 * }
+		 * 
+		 * for (int u = 0; u < namn.size(); u++) { if (namn.get(u).getAntal() < runda) {
+		 * namn.get(u).hasPassed(); System.out.println(namn.get(u).getName() +
+		 * " Står över denna runda");
+		 * 
+		 * } }
+		 * 
+		 * /* for (int i = 0; i < 8; i++) { int j1 = rand.nextInt(namn.size()-1); int j2
+		 * = rand.nextInt(namn.size()-1);
+		 * 
+		 * // Se att spelarna är kompatibla med varandra, annars välja om. while
+		 * (namn.get(j2).getAntal() > i) { j2 = rand.nextInt(namn.size()-1); }
+		 * 
+		 * while (namn.get(j1).getAntal() > runda || j1 == j2 ||
+		 * namn.get(j1).getMedspelare().contains(namn.get(j2))) { j1 =
+		 * rand.nextInt(namn.size()-1);
+		 * 
+		 * } //System.out.println(j1 + " och " +j2); // lägg till att de är valda
+		 * namn.get(j1).addAntal(); namn.get(j1).addMedspelare(namn.get(j2));
+		 * 
+		 * namn.get(j2).addAntal(); namn.get(j2).addMedspelare(namn.get(j1));
+		 * 
+		 * // skriv ut spelarParet System.out.println("Par " + (i + 1));
+		 * System.out.println(namn.get(j1).getName() + " & " + namn.get(j2).getName());
+		 * //System.out.println(j1+ " och " +j2); namn.remove(j1); namn.remove(j2);
+		 * 
+		 * 
+		 * } // går igenom de som blir över while(namn.size()>0) {
+		 * System.out.println(namn.get(0).getName() + " står över runda " + (runda+1));
+		 * namn.remove(0);
+		 * 
+		 * } //System.out.println(namn);
+		 */
+
+		// }
+
+	}
+
+}
